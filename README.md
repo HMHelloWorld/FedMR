@@ -2,6 +2,7 @@ The source code for **Is Aggregation the Only Choice? Federated Learning via Lay
 
 https://dl.acm.org/doi/abs/10.1145/3637528.3671722
 
+--------------------------------------------------------------------------------
 
 ## 1. Environment setting requirements
 * Python 3.7
@@ -11,9 +12,12 @@ https://dl.acm.org/doi/abs/10.1145/3637528.3671722
 ### 2.1 Parameter
 #### 2.1.1 Dataset Setting
 `--dataset <dataset name>`
+
 We can set ‘cifar10’, ‘cifar100’ and ‘femnist’ for CIFAR-10, CIFAR-100, and FEMNIST.
+
 #### 2.1.2 Model Settings
 `--num_classes <number>`
+
 Set the number of classes Set 10 for CIFAR-10
 
 Set 20 for CIFAR-100
@@ -21,7 +25,9 @@ Set 20 for CIFAR-100
 Set 62 for FEMNIST
 
 `--num_channels <number>`
+
 Set the number of channels of data Set 3 for CIFAR-10 and CIFAR-100. Set 1 for FEMNIST.
+
 #### 2.1.3 Data heterogeneity
 `--iid <0 or 1>`
 
@@ -54,6 +60,11 @@ Set the baseline name:
 
 Set the hyperparameter for FedMR
 
+#### 2.1.3 Loss-landscape
+Please use the tool as follows to generate the figure of loss-landscape：
+
+https://github.com/tomgoldstein/loss-landscape
+
 ## 3. Citation
 ```
 @inproceedings{hu2024aggregation,
@@ -64,3 +75,8 @@ Set the hyperparameter for FedMR
     year={2024}
 }
 ```
+--------------------------------------------------------------------------------
+
+If you have any questions, feel free to contact me (hu.ming.work@gmail.com).
+
+:blush::blush::blush: ~~~ Have a nice day ~~~ :blush::blush::blush:
