@@ -60,8 +60,6 @@ def args_parser():
 
     # FedMR arguments
     parser.add_argument("--first_stage_bound", type=int, default=0)
-    parser.add_argument("--fedmr_frozen_type", type=int, default=0, help="0 without using frozen; 1 soft frozen, 2 hard frozen")
-    parser.add_argument("--fedmr_frozen", type=float, default=0.0)
     parser.add_argument("--fedmr_partition", type=float, default=0.0)
 
 

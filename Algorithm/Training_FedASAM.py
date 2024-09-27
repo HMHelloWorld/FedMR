@@ -23,8 +23,8 @@ class LocalUpdate_FedASAM(object):
         self.verbose = verbose
         self.mixup=False
         self.mixup_alpha=1.0
-        self.rho = args.fedsam_rho
-        self.eta = args.fedsam_eta
+        self.rho = 0.1
+        self.eta = 0
 
     def train(self, net):
 

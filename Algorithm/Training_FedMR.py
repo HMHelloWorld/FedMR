@@ -62,7 +62,7 @@ class LocalUpdate_FedMR(object):
 
         return net.state_dict()
 
-def recommbination(w_locals, m):
+def recombination(w_locals, m):
 
     w_locals_new = copy.deepcopy(w_locals)
 
@@ -75,7 +75,7 @@ def recommbination(w_locals, m):
 
     return w_locals_new
 
-def recommbination_partition(w_locals, m, partition):
+def recombination_partition(w_locals, m, partition):
     is_partition = True
 
     w_locals_new = copy.deepcopy(w_locals)
@@ -98,51 +98,6 @@ def recommbination_partition(w_locals, m, partition):
         idx = idx + 1.0
     print(idx)
     print(partition)
-
-    return w_locals_new
-
-def recommbination_soft_frozen(w_locals, m, p):
-    w_avg = copy.deepcopy(w_locals[0])
-    w_locals_new = copy.deepcopy(w_locals)
-
-    nr = [i for i in range(m)]
-
-    for k in w_locals[0].keys():
-        random.shuffle(nr)
-        ra = random.uniform(0,1.0)
-        if ra < p:
-            for i in range(m):
-                w_locals_new[i][k] = w_locals[nr[i]][k]
-        else:
-            for i in range(1, m):
-                w_avg[k] += w_locals[i][k]
-            w_avg[k] = torch.div(w_avg[k], m)
-            for i in range(1, m):
-                w_locals_new[i][k] = copy.deepcopy(w_avg[k])
-
-    return w_locals_new
-
-def recommbination_hard_frozen(w_locals, m, p):
-    w_avg = copy.deepcopy(w_locals[0])
-    w_locals_new = copy.deepcopy(w_locals)
-
-    nr = [i for i in range(m)]
-    layer_num = p*len(w_locals[0].keys())
-    bar = len(w_locals[0].keys())/2
-
-    idx = 0
-
-    for k in w_locals[0].keys():
-        random.shuffle(nr)
-        if idx >= bar - layer_num/2 and idx <=bar + layer_num/2:
-            for i in range(m):
-                w_locals_new[i][k] = w_locals[nr[i]][k]
-        else:
-            for i in range(1, m):
-                w_avg[k] += w_locals[i][k]
-            w_avg[k] = torch.div(w_avg[k], m)
-            for i in range(1, m):
-                w_locals_new[i][k] = copy.deepcopy(w_avg[k])
 
     return w_locals_new
 
@@ -191,7 +146,7 @@ def FedMR(args, net_glob, dataset_train, dataset_test, dict_users):
             sim_arr.append(sim(args, w_locals))
 
         if iter >= args.first_stage_bound:
-            w_locals = recommbination(w_locals, m) # Model Recombination
+            w_locals = recombination(w_locals, m) # Model Recombination
         else:
             for i in range(len(w_locals)):
                 w_locals[i] = copy.deepcopy(w_glob)
@@ -204,55 +159,6 @@ def FedMR(args, net_glob, dataset_train, dataset_test, dict_users):
     save_result(train_loss, 'test_train_loss', args)
     save_model(net_glob.state_dict(), 'test_model', args)
 
-def FedMR_Frozen(args, net_glob, dataset_train, dataset_test, dict_users):
-    net_glob.train()
-
-    acc = []
-    loss = []
-    w_locals = []
-
-    m = max(int(args.frac * args.num_users), 1)
-    for i in range(m):
-        w_locals.append(copy.deepcopy(net_glob.state_dict()))
-
-    for iter in range(args.epochs):
-
-        print('*' * 80)
-        print('Round {:3d}'.format(iter))
-
-
-        m = max(int(args.frac * args.num_users), 1)
-        idxs_users = np.random.choice(range(args.num_users), m, replace=False)
-        for i, idx in enumerate(idxs_users):
-
-            net_glob.load_state_dict(w_locals[i])
-            local = LocalUpdate_FedMR(args=args, dataset=dataset_train, idxs=dict_users[idx])
-            w = local.train(net=net_glob)
-            w_locals[i] = copy.deepcopy(w)
-
-        # update global weights
-        w_glob = Aggregation(w_locals, None) # Global Model Generation
-
-        # copy weight to net_glob
-        net_glob.load_state_dict(w_glob)
-
-        item_acc,item_loss = test_with_loss(net_glob, dataset_test, args)
-
-        acc.append(item_acc)
-        loss.append(item_loss)
-        
-        if iter >= args.first_stage_bound:
-            if args.fedmr_frozen_type == 1:
-                w_locals = recommbination_soft_frozen(w_locals, m, (iter - args.first_stage_bound)/(args.epochs*args.fedmr_frozen))
-            elif args.fedmr_frozen_type == 2:
-                w_locals = recommbination_hard_frozen(w_locals, m, (iter - args.first_stage_bound)/(args.epochs*args.fedmr_frozen))
-        else:
-            for i in range(len(w_locals)):
-                w_locals[i] = copy.deepcopy(w_glob)
-
-
-    save_result(acc, 'test_acc', args)
-    save_result(loss, 'test_loss', args)
 
 def FedMR_Partition(args, net_glob, dataset_train, dataset_test, dict_users, partition):
     net_glob.train()
@@ -292,7 +198,7 @@ def FedMR_Partition(args, net_glob, dataset_train, dataset_test, dict_users, par
         loss.append(item_loss)
         
         if iter >= args.first_stage_bound:
-            w_locals = recommbination_partition(w_locals, m, partition) # Model Recombination
+            w_locals = recombination_partition(w_locals, m, partition) # Model Recombination
         else:
             for i in range(len(w_locals)):
                 w_locals[i] = copy.deepcopy(w_glob)

@@ -18,7 +18,6 @@ from utils.get_dataset import get_dataset
 from utils.utils import save_result,save_model
 from Algorithm.Training_FedGen import FedGen
 from Algorithm.Training_FedMR import FedMR
-from Algorithm.Training_FedMR import FedMR_Frozen
 from Algorithm.Training_FedMR import FedMR_Partition
 from Algorithm.Training_FedIndenp import FedIndep
 from Algorithm.Training_FedMut import FedMut
@@ -252,9 +251,7 @@ if __name__ == '__main__':
         FedGen(args, net_glob, dataset_train, dataset_test, dict_users)
     elif args.algorithm == 'FedMR':
         partition = args.fedmr_partition
-        if args.fedmr_frozen_type > 0:
-            FedMR_Frozen(args, net_glob, dataset_train, dataset_test, dict_users)
-        elif partition == 0:
+        if partition == 0:
             FedMR(args, net_glob, dataset_train, dataset_test, dict_users)
         else:
             FedMR_Partition(args, net_glob, dataset_train, dataset_test, dict_users,partition)

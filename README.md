@@ -16,6 +16,10 @@ https://dl.acm.org/doi/abs/10.1145/3637528.3671722
 We can set ‘cifar10’, ‘cifar100’ and ‘femnist’ for CIFAR-10, CIFAR-100, and FEMNIST.
 
 #### 2.1.2 Model Settings
+`--model <model_name>`
+
+We can set ‘resnet20’, ‘vgg’, and ‘cnn’ for ResNet-20, VGG-16, and CNN model.
+
 `--num_classes <number>`
 
 Set the number of classes Set 10 for CIFAR-10
@@ -55,10 +59,13 @@ Set the baseline name:
 * FedProx
 * FedGen
 * ClustererSampling
+* FedIndep
 
 `-- first_stage_bound <num>`
 
-Set the hyperparameter for FedMR
+Set the round number of first stage for FedMR
+
+Tips: set 50 or 100 for VGG model
 
 #### 2.1.3 Loss-landscape
 Please use the tool as follows to generate the figure of loss-landscape：
