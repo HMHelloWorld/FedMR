@@ -1,4 +1,5 @@
-The source code for **Is Aggregation the Only Choice? Federated Learning via Layer-wise Model Recombination** (Accepted by KDD2024)
+# FedMR
+The source code for **Is Aggregation the Only Choice? Federated Learning via Layer-wise Model Recombination**(Accepted by KDD2024)
 
 https://dl.acm.org/doi/abs/10.1145/3637528.3671722
 
