@@ -31,7 +31,8 @@ Set 62 for FEMNIST
 
 `--num_channels <number>`
 
-Set the number of channels of data Set 3 for CIFAR-10 and CIFAR-100. Set 1 for FEMNIST.
+Set the number of channels of datasets.
+Set 3 for CIFAR-10 and CIFAR-100. Set 1 for FEMNIST.
 
 #### 2.1.3 Data heterogeneity
 `--iid <0 or 1>`
@@ -59,12 +60,12 @@ Set the baseline name:
 * FedAvg
 * FedProx
 * FedGen
-* ClustererSampling
+* ClusteredSampling
 * FedIndep
 
 `-- first_stage_bound <num>`
 
-Set the round number of first stage for FedMR
+Set the round number of the first stage for FedMR
 
 Tips: set 50 or 100 for VGG model
 
@@ -85,6 +86,6 @@ https://github.com/tomgoldstein/loss-landscape
 ```
 --------------------------------------------------------------------------------
 
-If you have any questions, feel free to contact me (hu.ming.work@gmail.com).
+If you have any questions, please contact me at hu.ming.work@gmail.com.
 
 :blush::blush::blush: ~~~ Have a nice day ~~~ :blush::blush::blush:
